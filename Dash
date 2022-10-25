@@ -2,13 +2,12 @@ local mouse = game.Players.LocalPlayer:GetMouse()
 mouse.KeyDown:Connect(function(key)
     if key == "q" then
             game.Players.LocalPlayer.Character.LocalScript:Destroy()
-        else
-            mouse.KeyDown:Connect(function(key)
-                if key == "q" then
-                game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed +100
-                wait(0.1)
-                game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed -100
-            end
-        end)
+    end
+end)
+mouse.KeyDown:Connect(function(key)
+    if key == "q" then
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed +100
+    wait(0.1)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed -100
     end
 end)
