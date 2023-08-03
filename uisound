@@ -1,97 +1,115 @@
 
+-- you can edit for free
 
--- for free you can edit
+local uilibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kiet1308/tvkhub/main/rac"))()
+local windowz = uilibrary:CreateWindow("PLANG HUB", "Radio - KOTH", true)
 
+local sound = nil
+local volume = nil
 
-
-getgenv().SecureMode = true
-local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Rayfield/main/source'))()
-
-local Window = Rayfield:CreateWindow({
-   Name = "PLANG HUB (Radio Script)",
-   LoadingTitle = "PLANG HUB",
-   LoadingSubtitle = "by Plang",
-   ConfigurationSaving = {
-      Enabled = true,
-      FolderName = "PLANG HUB", -- Create a custom folder for your hub/game
-      FileName = "koths"
-   },
-   Discord = {
-      Enabled = false,
-      Invite = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ABCD would be ABCD.
-      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
-   },
-   KeySystem = false, -- Set this to true to use our key system
-   KeySettings = {
-      Title = "Sirius Hub",
-      Subtitle = "Key System",
-      Note = "Join the discord (discord.gg/sirius)",
-      FileName = "SiriusKey",
-      SaveKey = true,
-      GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
-      Key = "Hello"
-   }
-})
-
-local Tab = Window:CreateTab("Main", 4483362458) -- Title, Image
-local Section = Tab:CreateSection("Sound")
-
-
-local Input = Tab:CreateInput({
-   Name = "Input the sound id",
-   PlaceholderText = "nil",
-   RemoveTextAfterFocusLost = false,
-   Callback = function(Text)
-    id = Text
-    print(Text)
-   end,
-})
-
-local Dropdown = Tab:CreateDropdown({
-   Name = "Free sound id (type in Input the sound id)",
-   Options = {"1848179392","1839378546","2167611163","1841153093","7024340270","5409360995","7029024726","1847239408","142376088","3480567919","6911766512","6896306675","2626152169","6819593773","7601924770"},
-   CurrentOption = "1848179392",
-   Flag = "sounddown", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Option)
-    print(Option)
-   end,
-})
-
-local Input = Tab:CreateInput({
-   Name = "Volume (normal is 10)",
-   PlaceholderText = "nil",
-   RemoveTextAfterFocusLost = false,
-   Callback = function(Text)
-    volume = Text
-   end,
-})
-
-
-local Button = Tab:CreateButton({
-   Name = "Start Radio (to stop reset your character, if not work reset your character)",
-   Callback = function()
-
-local args = {
-    [1] = "rbxassetid://" .. id,
-    [2] = 1,
-    [3] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-}
-
-for i = 1,volume do
-game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("replicateSounds"):FireServer(unpack(args))
+function start(s,v)
+    local args = {
+        [1] = "rbxassetid://" .. s,
+        [2] = 1,
+        [3] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+    }
+    for i = 1,v do
+        game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("replicateSounds"):FireServer(unpack(args))
+    end
 end
 
-   end,
-})
 
-local Tab = Window:CreateTab("Settings", 4483362458) -- Title, Image
-local Section = Tab:CreateSection("Settings")
 
-local Button = Tab:CreateButton({
-   Name = "Destroy Ui/Unload Script",
-   Callback = function()
-   Rayfield:Destroy()
-   end,
-})
+local Page1 = windowz:CreatePage("Main")
+local Section1 = Page1:CreateSection("Main Section")
 
+Section1:CreateTextbox("Sound id", false, function(vv)
+    sound = vv
+    print(vv)
+end)
+
+Section1:CreateTextbox("Volume", false, function(vv)
+    volume = vv
+    print(vv)
+end)
+
+Section1:CreateButton("Start", function ()
+    print("Start")
+    start(sound,volume)
+end)
+
+Section1:CreateToggle("Loop when sound end", {Toggled=false , Description = false}, function(Value)
+    print(Value)
+    _G.loopstart = Value
+end)
+
+Section1:CreateToggle("Auto Delete Anti-Cheat", {Toggled=false , Description = false}, function(Value)
+   print(Value)
+   _G.deleteat = Value
+end)
+
+spawn(function()
+    while wait() do
+        pcall(function()
+            if _G.deleteat then
+               if game.Players.LocalPlayer.Character:FindFirstChild("LocalScript") then
+                  warn("Anti-Cheat Has Been Delete")
+               end
+            end
+            if _G.loopstart then  
+                if game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("Sound") then
+                else
+                    print("Not Found")
+                    start(sound,volume)
+                    task.wait(1)
+                end          
+            end
+        end)
+    end
+end)
+
+local music = {
+   [1] = 1848179392,
+   [2] = 1839378546,
+   [3] = 2167611163,
+   [4] = 1841153093,
+   [5] = 7024340270,
+   [6] = 5409360995,
+   [7] = 7029024726,
+   [8] = 1847239408,
+   [9] = 142376088,
+   [10] = 3480567919,
+   [11] = 6911766512,
+   [12] = 6896306675,
+   [13] = 2626152169,
+   [14] = 6819593773,
+   [15] = 7601924770,
+   [16] = 6913550990,
+   [17] = 6783714255
+}
+
+
+Section1:CreateDropdown("Sound Id List ", {
+   List = music,
+   Default = "Nil"}, function(value)
+      print(value)
+      setclipboard(value)
+end)
+
+local Page1 = windowz:CreatePage("Setting")
+local Section1 = Page1:CreateSection("Setting")
+
+Section1:CreateButton("Destroy UI", function ()
+    game.CoreGui:FindFirstChild("CFAHubPremium2022"):Destroy()
+end)
+Section1:CreateButton("Press ] to open/close UI", function ()
+end)
+
+
+local mouse = game.Players.LocalPlayer:GetMouse()
+mouse.KeyDown:Connect(function(key)
+    if key == "]" then
+        game.CoreGui:FindFirstChild("CFAHubPremium2022").Enabled = not game.CoreGui:FindFirstChild("CFAHubPremium2022").Enabled
+    end
+end)
 
